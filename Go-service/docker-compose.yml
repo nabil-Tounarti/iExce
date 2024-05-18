@@ -1,15 +1,6 @@
-version: '2'
-services:
-  ipfs-daemon:
-    image: 'ipfs/kubo:v0.18.1'
-    ports:
-      - "4001:4001"
-      - "5001:5001"
-    user: "ipfs"
-    command: [ "daemon", "--enable-pubsub-experiment" ]
-    networks: 
-      - mynetwork
+version: '2.1'
 
+services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
@@ -19,7 +10,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - mynetwork
+      - mynetwork2
 
   kafka-server:
     image: confluentinc/cp-kafka:latest
@@ -34,24 +25,14 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - mynetwork
-      
-  springapi:
-    image: springapi
-    ports:
-      - "8080:8080"
-    networks:
-      - mynetwork
-    depends_on:
-      - ipfs-daemon
-      - kafka-server
-
+      - mynetwork2
+  
   mongodb:
     image: mongo:latest
     ports:
       - "27017:27017"
     networks:
-      - mynetwork
+      - mynetwork2
   
   go-service:
     image: go-service
@@ -60,11 +41,14 @@ services:
     ports: 
       - "3336:3336"
     networks:
-      - mynetwork
+      - mynetwork2
     depends_on:
-      - kafka-server
-      - mongodb
+      kafka-server:
+        condition: service_completed_successfully
+      mongodb :
+        
+    
 
 networks:
-  mynetwork:
+  mynetwork2:
     driver: bridge
