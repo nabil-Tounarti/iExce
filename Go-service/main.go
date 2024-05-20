@@ -49,7 +49,23 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	// Start HTTP server for API
+	// Middleware pour gérer les en-têtes CORS
+	corsMiddleware := func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+			if r.Method == http.MethodOptions {
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
+	}
+
+	// Set up HTTP server for API
 	http.HandleFunc("/data", func(w http.ResponseWriter, r *http.Request) {
 		// Query MongoDB for data
 		cur, err := collection.Find(context.Background(), bson.D{})
@@ -70,8 +86,11 @@ func main() {
 		json.NewEncoder(w).Encode(data)
 	})
 
+	// Utiliser le middleware CORS
+	handler := corsMiddleware(http.DefaultServeMux)
+
 	go func() {
-		log.Fatal(http.ListenAndServe(":3336", nil))
+		log.Fatal(http.ListenAndServe(":3336", handler))
 	}()
 
 	consumer := Consumer{

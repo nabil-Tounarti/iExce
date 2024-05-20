@@ -7,7 +7,7 @@ services:
       - "5001:5001"
     user: "ipfs"
     command: [ "daemon", "--enable-pubsub-experiment" ]
-    networks: 
+    networks:
       - mynetwork
 
   zookeeper:
@@ -35,9 +35,9 @@ services:
       - zookeeper
     networks:
       - mynetwork
-      
+
   springapi:
-    image: springapi
+    image: toupk/springapi
     ports:
       - "8080:8080"
     networks:
@@ -54,10 +54,8 @@ services:
       - mynetwork
   
   go-service:
-    image: go-service
-    build:
-      context: .
-    ports: 
+    image: toupk/go-service
+    ports:
       - "3336:3336"
     networks:
       - mynetwork

@@ -2,6 +2,7 @@ package com.example.ipfsdemon;
 
 
 import com.example.ipfsdemon.kafka.KafkaProducerIpfs;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class IPFSController {
@@ -26,10 +30,21 @@ public class IPFSController {
 
     @PostMapping(value = "upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
-        KafkaProducerIpfs kafkaProducerIpfs = new KafkaProducerIpfs();;
+        KafkaProducerIpfs kafkaProducerIpfs = new KafkaProducerIpfs();
         try {
+            String originalFileName = file.getOriginalFilename();
             String hachCode = ipfsService.saveFile(file);
-            kafkaProducerIpfs.sendMessage("HachCode_Topic", hachCode);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> messageData = new HashMap<>();
+            messageData.put("fileName", originalFileName);
+            messageData.put("hashCode", hachCode);
+
+
+            String messageJson = objectMapper.writeValueAsString(messageData);
+
+
+            kafkaProducerIpfs.sendMessage("HachCode_Topic", messageJson);
+
             return hachCode;
         } catch (Exception e) {
             e.printStackTrace();

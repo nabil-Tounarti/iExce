@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Download</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">File Upload and Download</h1>
+        <div class="upload-section">
+            <input type="file" id="fileInput" class="file-input">
+            <button onclick="uploadFile()" class="upload-btn">Upload File</button>
+        </div>
+        <div id="resultContainer" class="result-container" hidden></div>
+        <div class="divider"></div>
+
+        <div class="download-section">
+            <label for="fileHash" class="hash-label">Enter File Hash:</label>
+            <input type="text" id="fileHash" class="hash-input" placeholder="Enter file hash...">
+            <button onclick="downloadFile()" class="download-btn">Download File</button>
+        </div>
+
+        <!-- Container to display the result -->
+        
+    </div>
+    
+    <div class="container">
+      <button onclick='fetchData()' class="btn-primary">Refrech Table</button>
+        <h1>Data Table</h1>
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Hash Code</th>
+              <th>Get The File</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="pagination-controls">
+          <button id="prev-page" disabled>Previous</button>
+          <span id="page-info"></span>
+          <button id="next-page">Next</button>
+        </div>
+      </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
