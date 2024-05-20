@@ -34,6 +34,7 @@ services:
     networks:
       - mynetwork2
   
+
   go-service:
     image: go-service
     build:
