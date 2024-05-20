@@ -71,6 +71,24 @@
 
 ![image](https://github.com/nabil-Tounarti/iExce/assets/117689544/1a0f3973-91be-4932-b110-697077710264)
 
+### Pourquoi j'ai choisi Go plutôt que Java ou Rust pour ce projet :
+Pourquoi j'ai opté pour Go plutôt que Java ou Rust pour ce projet ? 
+regardons un peu plus en détail ce qu'on cherchait à faire. Notre projet implique la gestion de fichiers à travers des services interconnectés utilisant IPFS et MongoDB. L'idée était de créer deux services distincts : un pour charger des documents sur IPFS et notifier l'autre service, et l'autre pour recevoir ces notifications, stocker les identifiants des nouveaux fichiers dans MongoDB, et offrir une interface pour consulter ces identifiants.
+
+Maintenant, pourquoi Go ? D'abord, on voulait quelque chose qui soit à la fois performant et facile à gérer pour nos microservices. Go est parfait pour ça. Avec son modèle de concurrence intégré, il peut gérer efficacement plusieurs tâches en même temps, ce qui est crucial pour notre application qui traite des fichiers. De plus, les binaires Go sont compilés de manière statique, donc pas besoin de se soucier des dépendances. C'est super pour déployer nos services sans tracas.
+
+En ce qui concerne Java, oui, c'est un choix solide pour les grosses applications d'entreprise, mais pour notre cas, ça semblait un peu trop lourd. On avait pas besoin de tout le kit et caboodle que Java offre, et ça aurait pu rendre nos microservices un peu trop gourmands en ressources.
+
+Quant à Rust, c'est vrai que sa sécurité mémoire et ses performances sont très attrayantes, mais honnêtement, on n'avait pas forcément besoin de toute cette puissance pour notre projet.
+
+### Ce que j'aurais pu faire mieux dans ma solution :
+
+    Scalabilité : J'aurais dû penser plus à comment notre solution peut évoluer si on a plus de trafic. Peut-être qu'on aurait dû envisager Kubernetes ou un truc du genre.
+    Sécurité : On aurait pu renforcer un peu plus la sécurité, surtout quand on manipule des données sensibles comme les fichiers et les notifications. Ça aurait été bien d'ajouter plus de vérifications.
+    Gestion des erreurs : On aurait pu être plus malins sur la gestion des erreurs, histoire de rendre nos messages d'erreur plus clairs et de mieux gérer les moments où ça part en vrille.
+    Tests : Plus de tests auraient été bienvenus, histoire de s'assurer que tout fonctionne comme prévu. On aurait pu automatiser ça pour gagner du temps.
+    Documentation : La doc aurait pu être plus détaillée, avec des exemples concrets et des instructions plus claires. Ça aurait facilité la vie de tout le monde.
+
 
 
 
